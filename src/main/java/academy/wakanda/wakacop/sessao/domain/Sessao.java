@@ -1,16 +1,24 @@
 package academy.wakanda.wakacop.sessao.domain;
 
+import academy.wakanda.wakacop.pauta.domain.Pauta;
+import academy.wakanda.wakacop.pauta.domain.VotoPauta;
+import academy.wakanda.wakacop.sessao.application.api.VotoRequest;
 import academy.wakanda.wakacop.sessao.application.api.SessaoAberturaRequest;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sessao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,19 +26,53 @@ public class Sessao {
     private UUID id;
     private UUID idPauta;
     private Integer tempoDuracao;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private StatusSessaoVotacao status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataEncerramento;
 
+    @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @MapKey(name = "cpfAssociado")
+    private Map<String, VotoPauta> votos;
 
-    public Sessao(SessaoAberturaRequest sessaoAberturaRequest) {
+    public Sessao(SessaoAberturaRequest sessaoAberturaRequest, Pauta pauta) {
         this.id = UUID.randomUUID();
-        this.idPauta = sessaoAberturaRequest.getIdPauta();
+        this.idPauta = pauta.getId();
         this.tempoDuracao = sessaoAberturaRequest.getTempoDuracao().orElse(1);
         this.status = StatusSessaoVotacao.ABERTA;
         this.dataCriacao = LocalDateTime.now();
         this.dataEncerramento = this.dataCriacao.plusMinutes(this.tempoDuracao);
+        votos = new HashMap<>();
     }
 
+    public VotoPauta recebeVoto(VotoRequest votoRequest){
+        validaAssociado(votoRequest.getCpfAssociado());
+        validaSessaoAberta();
+        VotoPauta votoPauta = new VotoPauta(this, votoRequest);
+        this.votos.put(votoRequest.getCpfAssociado(), votoPauta);
+        return votoPauta;
+    }
+
+    public void validaAssociado(String cpfAssociado){
+        if(this.votos.containsKey(cpfAssociado))
+            throw new RuntimeException("Associado já votou nessa sessão!");
+    }
+
+    public void validaSessaoAberta(){
+        atualizaStatus();
+        if(this.status.equals(StatusSessaoVotacao.FECHADA))
+            throw new RuntimeException("Essa sessão está fechada!");
+    }
+
+    private void atualizaStatus() {
+        if(this.status.equals(StatusSessaoVotacao.ABERTA)){
+            if(LocalDateTime.now().isAfter(this.dataEncerramento))
+                fechaSessao();
+        }
+    }
+
+    private void fechaSessao() {
+        this.status = StatusSessaoVotacao.FECHADA;
+    }
 }
