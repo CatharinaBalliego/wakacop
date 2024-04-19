@@ -26,14 +26,16 @@ public class VotoPauta {
     private Sessao sessao;
     private String cpfAssociado;
     private Voto opcaoVoto;
-    private LocalDateTime dataVoto;
-
-
+    private LocalDateTime momentoVoto;
 
     public VotoPauta(Sessao sessao, VotoRequest votoRequest) {
         this.sessao = sessao;
         this.cpfAssociado = votoRequest.getCpfAssociado();
         this.opcaoVoto = votoRequest.getOpcaoVoto();
-        this.dataVoto = LocalDateTime.now();
+        this.momentoVoto = LocalDateTime.now();
+    }
+
+    public UUID getIdSessao(){
+        return this.sessao.getId();
     }
 }

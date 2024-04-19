@@ -16,9 +16,9 @@ public class PautaInfraRepository implements PautaRepository {
     @Override
     public Pauta salva(Pauta pauta) {
         log.info("[start] PautaInfraRepository - salva");
-        pautaSpringDataJPARepository.save(pauta);
+        Pauta pautaSalva = pautaSpringDataJPARepository.save(pauta);
         log.info("[finish] PautaInfraRepository - salva");
-        return pauta;
+        return pautaSalva;
     }
 
     @Override

@@ -28,8 +28,8 @@ public class Sessao {
     private Integer tempoDuracao;
     @Enumerated(EnumType.STRING)
     private StatusSessaoVotacao status;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataEncerramento;
+    private LocalDateTime momentoAbertura;
+    private LocalDateTime momentoEncerramento;
 
     @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -41,8 +41,8 @@ public class Sessao {
         this.idPauta = pauta.getId();
         this.tempoDuracao = sessaoAberturaRequest.getTempoDuracao().orElse(1);
         this.status = StatusSessaoVotacao.ABERTA;
-        this.dataCriacao = LocalDateTime.now();
-        this.dataEncerramento = this.dataCriacao.plusMinutes(this.tempoDuracao);
+        this.momentoAbertura = LocalDateTime.now();
+        this.momentoEncerramento = this.momentoAbertura.plusMinutes(this.tempoDuracao);
         votos = new HashMap<>();
     }
 
@@ -67,7 +67,7 @@ public class Sessao {
 
     private void atualizaStatus() {
         if(this.status.equals(StatusSessaoVotacao.ABERTA)){
-            if(LocalDateTime.now().isAfter(this.dataEncerramento))
+            if(LocalDateTime.now().isAfter(this.momentoEncerramento))
                 fechaSessao();
         }
     }

@@ -1,14 +1,13 @@
 package academy.wakanda.wakacop.sessao.application.api;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @ToString
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class SessaoAberturaRequest {
     @Getter
     @NotNull
