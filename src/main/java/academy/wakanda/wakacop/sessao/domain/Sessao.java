@@ -18,14 +18,19 @@ public class Sessao {
     private UUID id;
     private UUID idPauta;
     private Integer tempoDuracao;
+    @Enumerated
+    private StatusSessaoVotacao status;
     private LocalDateTime dataCriacao;
+    private LocalDateTime dataEncerramento;
 
 
     public Sessao(SessaoAberturaRequest sessaoAberturaRequest) {
         this.id = UUID.randomUUID();
         this.idPauta = sessaoAberturaRequest.getIdPauta();
         this.tempoDuracao = sessaoAberturaRequest.getTempoDuracao().orElse(1);
+        this.status = StatusSessaoVotacao.ABERTA;
         this.dataCriacao = LocalDateTime.now();
+        this.dataEncerramento = this.dataCriacao.plusMinutes(this.tempoDuracao);
     }
 
 }
