@@ -38,4 +38,8 @@ public class VotoPauta {
     public UUID getIdSessao(){
         return this.sessao.getId();
     }
+
+    public boolean opcaoIgual(Voto opcaoVoto){
+        return this.opcaoVoto.equals(opcaoVoto);
+    }
 }
