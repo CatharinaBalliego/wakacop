@@ -1,5 +1,6 @@
 package academy.wakanda.wakacop.sessao.application.service;
 
+import academy.wakanda.wakacop.associado.application.service.AssociadoService;
 import academy.wakanda.wakacop.pauta.application.service.PautaService;
 import academy.wakanda.wakacop.pauta.domain.Pauta;
 import academy.wakanda.wakacop.pauta.domain.VotoPauta;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class SessaoApplicationService implements SessaoService {
     private final SessaoRepository sessaoRepository;
     private final PautaService pautaService;
+    private final AssociadoService associadoService;
+
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
         log.info("[start] SessaoApplicationService - abreSessao");
@@ -31,7 +34,7 @@ public class SessaoApplicationService implements SessaoService {
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest) {
         log.info("[start] SessaoApplicationService - recebeVoto");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
-        VotoPauta voto = sessao.recebeVoto(votoRequest);
+        VotoPauta voto = sessao.recebeVoto(votoRequest, associadoService);
         sessaoRepository.salva(sessao);
         log.info("[finish] SessaoApplicationService - recebeVoto");
         return new VotoResponse(voto);

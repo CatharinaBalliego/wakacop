@@ -1,5 +1,6 @@
 package academy.wakanda.wakacop.sessao.domain;
 
+import academy.wakanda.wakacop.associado.application.service.AssociadoService;
 import academy.wakanda.wakacop.pauta.domain.Pauta;
 import academy.wakanda.wakacop.pauta.domain.VotoPauta;
 import academy.wakanda.wakacop.sessao.application.api.ResultadoSessaoResponse;
@@ -47,20 +48,25 @@ public class Sessao {
         votos = new HashMap<>();
     }
 
-    public VotoPauta recebeVoto(VotoRequest votoRequest){
-        validaAssociado(votoRequest.getCpfAssociado());
+    public VotoPauta recebeVoto(VotoRequest votoRequest, AssociadoService associadoService){
+        validaAssociado(votoRequest.getCpfAssociado(), associadoService);
         validaSessaoAberta();
         VotoPauta votoPauta = new VotoPauta(this, votoRequest);
         this.votos.put(votoRequest.getCpfAssociado(), votoPauta);
         return votoPauta;
     }
 
-    public void validaAssociado(String cpfAssociado){
+    private void validaAssociado(String cpfAssociado, AssociadoService associadoService){
+        associadoService.validaCpfAssociado(cpfAssociado);
+        validaVotoDuplicado(cpfAssociado);
+    }
+
+    private void validaVotoDuplicado(String cpfAssociado){
         if(this.votos.containsKey(cpfAssociado))
             throw new RuntimeException("Associado já votou nessa sessão!");
     }
 
-    public void validaSessaoAberta(){
+    private void validaSessaoAberta(){
         atualizaStatus();
         if(this.status.equals(StatusSessaoVotacao.FECHADA))
             throw new RuntimeException("Essa sessão está fechada!");
