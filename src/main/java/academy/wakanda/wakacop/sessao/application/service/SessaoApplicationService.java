@@ -23,30 +23,30 @@ public class SessaoApplicationService implements SessaoService {
 
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
-        log.info("[start] SessaoApplicationService - abreSessao");
+        log.debug("[start] SessaoApplicationService - abreSessao");
         Pauta pauta = pautaService.getPautaPorId(sessaoAberturaRequest.getIdPauta());
         Sessao sessao = sessaoRepository.salva(new Sessao(sessaoAberturaRequest, pauta));
-        log.info("[finish] SessaoApplicationService - abreSessao");
+        log.debug("[finish] SessaoApplicationService - abreSessao");
         return new SessaoAberturaResponse(sessao);
     }
 
     @Override
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest) {
-        log.info("[start] SessaoApplicationService - recebeVoto");
+        log.debug("[start] SessaoApplicationService - recebeVoto");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
         VotoPauta voto = sessao.recebeVoto(votoRequest, associadoService);
         sessaoRepository.salva(sessao);
-        log.info("[finish] SessaoApplicationService - recebeVoto");
+        log.debug("[finish] SessaoApplicationService - recebeVoto");
         return new VotoResponse(voto);
     }
 
     @Override
     public ResultadoSessaoResponse obtemResultado(UUID idSessao) {
-        log.info("[start] SessaoApplicationService - obtemResultado");
+        log.debug("[start] SessaoApplicationService - obtemResultado");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
         ResultadoSessaoResponse resultado = sessao.obtemResultado();
         sessaoRepository.salva(sessao);
-        log.info("[finish] SessaoApplicationService - obtemResultado");
+        log.debug("[finish] SessaoApplicationService - obtemResultado");
         return resultado;
     }
 }
