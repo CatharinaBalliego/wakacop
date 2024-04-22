@@ -6,6 +6,7 @@ import academy.wakanda.wakacop.pauta.domain.Pauta;
 import academy.wakanda.wakacop.pauta.domain.VotoPauta;
 import academy.wakanda.wakacop.sessao.application.api.*;
 import academy.wakanda.wakacop.sessao.application.repository.SessaoRepository;
+import academy.wakanda.wakacop.sessao.domain.PublicadorResultadoSessao;
 import academy.wakanda.wakacop.sessao.domain.Sessao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,7 @@ public class SessaoApplicationService implements SessaoService {
     private final SessaoRepository sessaoRepository;
     private final PautaService pautaService;
     private final AssociadoService associadoService;
+    private final PublicadorResultadoSessao publicadorResultadoSessao;
 
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
@@ -31,7 +33,7 @@ public class SessaoApplicationService implements SessaoService {
     }
 
     @Override
-    public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest) {
+    public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest, PublicadorResultadoSessao publicadorResultadoSessao) {
         log.debug("[start] SessaoApplicationService - recebeVoto");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
         VotoPauta voto = sessao.recebeVoto(votoRequest, associadoService);
@@ -44,7 +46,7 @@ public class SessaoApplicationService implements SessaoService {
     public ResultadoSessaoResponse obtemResultado(UUID idSessao) {
         log.debug("[start] SessaoApplicationService - obtemResultado");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
-        ResultadoSessaoResponse resultado = sessao.obtemResultado();
+        ResultadoSessaoResponse resultado = sessao.obtemResultado(publicadorResultadoSessao);
         sessaoRepository.salva(sessao);
         log.debug("[finish] SessaoApplicationService - obtemResultado");
         return resultado;
