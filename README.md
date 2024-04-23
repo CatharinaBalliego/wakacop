@@ -11,7 +11,7 @@ Este sistema é um back-end desenvolvido em Java Spring Boot para gerenciar sess
 
   
 ### Restrições
--Operação na nuvem.
+- Operação na nuvem.
 - Persistência de dados.
 - Foco no back-end.
 
@@ -27,7 +27,7 @@ Java Spring Boot, Maven, Docker Compose.
 - Estratégia de versionamento da API.
   
 ## Pré-Requisitos
--Java 17
+- Java 17
 - Maven
 - Docker e Docker Compose
   
