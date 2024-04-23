@@ -40,4 +40,5 @@ Java Spring Boot, Maven, Docker Compose.
 
 ## Testando a Aplicação
 - Importe a collection do Postman fornecida para testar as APIs.
+
 [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/32643469-5f98dcf5-a3fe-4ca2-932e-e748b5b6337d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D32643469-5f98dcf5-a3fe-4ca2-932e-e748b5b6337d%26entityType%3Dcollection%26workspaceId%3D3113d6d0-e119-4822-9103-86b481006178)
