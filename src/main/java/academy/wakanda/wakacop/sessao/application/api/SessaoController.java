@@ -1,6 +1,7 @@
 package academy.wakanda.wakacop.sessao.application.api;
 
 import academy.wakanda.wakacop.sessao.application.service.SessaoService;
+import academy.wakanda.wakacop.sessao.domain.PublicadorResultadoSessao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Log4j2
 public class SessaoController implements SessaoAPI {
     private final SessaoService sessaoService;
+    private final PublicadorResultadoSessao publicadorResultadoSessao;
     @Override
     public SessaoAberturaResponse abreSessaoVotacao(SessaoAberturaRequest sessaoAberturaRequest) {
         log.debug("[start] SessaoController - abreSessaoVotacao");
@@ -24,7 +26,7 @@ public class SessaoController implements SessaoAPI {
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest) {
         log.debug("[start] SessaoController - recebeVoto");
         log.debug("[idSessao] {}", idSessao);
-        VotoResponse votoResponse = sessaoService.recebeVoto(idSessao, votoRequest);
+        VotoResponse votoResponse = sessaoService.recebeVoto(idSessao, votoRequest, publicadorResultadoSessao);
         log.debug("[finish] SessaoController - recebeVoto");
         return votoResponse;
     }
