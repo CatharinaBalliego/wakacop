@@ -4,10 +4,7 @@ import academy.wakanda.wakacop.sessao.application.api.VotoRequest;
 import academy.wakanda.wakacop.sessao.domain.Sessao;
 import academy.wakanda.wakacop.sessao.domain.Voto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,6 +13,8 @@ import java.util.UUID;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class VotoPauta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
