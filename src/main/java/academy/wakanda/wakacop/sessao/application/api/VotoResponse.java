@@ -1,7 +1,6 @@
 package academy.wakanda.wakacop.sessao.application.api;
 
-import academy.wakanda.wakacop.pauta.domain.VotoPauta;
-import academy.wakanda.wakacop.sessao.domain.Voto;
+import academy.wakanda.wakacop.sessao.domain.VotoPauta;
 import lombok.Getter;
 import lombok.ToString;
 

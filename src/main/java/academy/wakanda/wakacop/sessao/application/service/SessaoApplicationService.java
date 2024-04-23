@@ -3,7 +3,7 @@ package academy.wakanda.wakacop.sessao.application.service;
 import academy.wakanda.wakacop.associado.application.service.AssociadoService;
 import academy.wakanda.wakacop.pauta.application.service.PautaService;
 import academy.wakanda.wakacop.pauta.domain.Pauta;
-import academy.wakanda.wakacop.pauta.domain.VotoPauta;
+import academy.wakanda.wakacop.sessao.domain.VotoPauta;
 import academy.wakanda.wakacop.sessao.application.api.*;
 import academy.wakanda.wakacop.sessao.application.repository.SessaoRepository;
 import academy.wakanda.wakacop.sessao.domain.PublicadorResultadoSessao;
@@ -36,7 +36,7 @@ public class SessaoApplicationService implements SessaoService {
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest votoRequest, PublicadorResultadoSessao publicadorResultadoSessao) {
         log.debug("[start] SessaoApplicationService - recebeVoto");
         Sessao sessao = sessaoRepository.buscarPorId(idSessao);
-        VotoPauta voto = sessao.recebeVoto(votoRequest, associadoService);
+        VotoPauta voto = sessao.recebeVoto(votoRequest, associadoService, publicadorResultadoSessao);
         sessaoRepository.salva(sessao);
         log.debug("[finish] SessaoApplicationService - recebeVoto");
         return new VotoResponse(voto);

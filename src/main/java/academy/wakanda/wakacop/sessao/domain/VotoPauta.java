@@ -1,4 +1,4 @@
-package academy.wakanda.wakacop.pauta.domain;
+package academy.wakanda.wakacop.sessao.domain;
 
 import academy.wakanda.wakacop.sessao.application.api.VotoRequest;
 import academy.wakanda.wakacop.sessao.domain.Sessao;

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @ToString
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder
 public class SessaoAberturaRequest {
     @Getter
     @NotNull
